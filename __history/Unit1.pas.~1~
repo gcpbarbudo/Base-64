@@ -1,0 +1,49 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.NetEncoding, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TForm1 = class(TForm)
+    edtTexto: TEdit;
+    menCodifica: TMemo;
+    btnCondifica: TButton;
+    sbPDF: TSpeedButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    FileOpenDialog1: TFileOpenDialog;
+    procedure sbPDFClick(Sender: TObject);
+    procedure btnCondificaClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btnCondificaClick(Sender: TObject);
+var
+Base64 : TBase64Encoding;
+arq : string;
+begin
+Base64 := TBase64Encoding.Create(0);
+Encoded := Base64.encod
+end;
+
+procedure TForm1.sbPDFClick(Sender: TObject);
+begin
+ if FileOpenDialog1.Execute then
+ edtTexto.Text := FileOpenDialog1.FileName;
+
+end;
+
+end.

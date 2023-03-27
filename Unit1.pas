@@ -1,0 +1,78 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.NetEncoding, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
+  IdBaseComponent, IdCoder, IdCoder3to4, IdCoderMIME,
+  Soap.EncdDecd;
+
+type
+  TForm1 = class(TForm)
+    edtTexto: TEdit;
+    menCodifica: TMemo;
+    btnCondifica: TButton;
+    sbPDF: TSpeedButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    FileOpenDialog1: TFileOpenDialog;
+    Button1: TButton;
+    SaveArquivo: TSaveDialog;
+    procedure sbPDFClick(Sender: TObject);
+    procedure btnCondificaClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btnCondificaClick(Sender: TObject);
+var
+  Base64 : TBase64Encoding;
+  mStream : TMemoryStream;
+  PDFBase64 : string;
+begin
+  mStream := TMemoryStream.Create;
+try
+  mStream.LoadFromFile(edtTexto.Text);
+  menCodifica.Text := EncodeBase64(mStream.Memory, mStream.Size);
+finally
+  FreeAndNil(mStream);
+end;
+
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+Arq : String;
+Save : TBytesStream;
+
+begin
+    Save := TBytesStream.Create(TNetEncoding.Base64.DecodeStringToBytes(menCodifica.Text));
+  try
+    if SaveArquivo.Execute then
+    if not FileExists(SaveArquivo.FileName) then
+      Save.SaveToFile(SaveArquivo.FileName);
+    finally
+    Save.Free;
+  end;
+    Application.MessageBox('Arquivo decodificado com sucesso', 'Aviso', MB_OK + MB_ICONINFORMATION);
+end;
+
+procedure TForm1.sbPDFClick(Sender: TObject);
+begin
+ if FileOpenDialog1.Execute then
+ edtTexto.Text := FileOpenDialog1.FileName;
+
+end;
+
+end.
